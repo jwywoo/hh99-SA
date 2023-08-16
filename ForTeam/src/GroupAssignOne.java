@@ -4,7 +4,20 @@ import java.util.Scanner;
 
 public class GroupAssignOne {
 
-    public static int scoreCounts(String given, int tries, ArrayList<Integer> answer) {
+    public static String scoreBuilder(int B, int S){
+        String result = "";
+        if (B == 0 && S == 0) result = "0B0S";
+        else {
+            if (S != 0 && B!=0) result = B+ "B" + S+ "S";
+            else {
+                if (S == 0) result = B + "B";
+                else result = S+"S";
+            }
+        }
+        return result;
+    }
+
+    public static boolean scoreCounts(String given, int tries, ArrayList<Integer> answer) {
         int S = 0;
         int B = 0;
         for (int i = 0; i < given.length(); i++) {
@@ -17,11 +30,9 @@ public class GroupAssignOne {
             }
         }
         System.out.println(tries + "번째 시도 :" + given);
-        if (S == 3) return 3;
-        else {
-            System.out.println(B+"B"+S+"S");
-            return 0;
-        }
+        System.out.println(scoreBuilder(B,S));
+        if (S==3) return true;
+        return false;
     }
 
     public static void main(String[] args) {
@@ -39,7 +50,7 @@ public class GroupAssignOne {
         int counts = 1;
         while (!result) {
             String given = sc.next();
-            if (scoreCounts(given, counts, answer) == 3) {
+            if (scoreCounts(given, counts, answer)) {
                 System.out.println(counts + "번만에 맞히셨습니다.");
                 System.out.println("게임을 종료합니다.");
                 result = true;
