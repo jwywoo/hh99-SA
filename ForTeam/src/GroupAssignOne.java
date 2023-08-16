@@ -33,7 +33,7 @@ public class GroupAssignOne {
 
         Collections.shuffle(candidates);
         ArrayList<Integer> answer = new ArrayList<>(candidates.subList(0,3));
-
+        System.out.println(answer);
         System.out.println("컴퓨터가 숫자를 생성하였습니다. 답을 맞춰보세요!");
         boolean result = false;
         int counts = 1;
