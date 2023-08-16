@@ -1,38 +1,51 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 public class GroupAssignOne {
 
-    public static String scoreBuilder(int B, int S){
-        String result = "";
-        if (B == 0 && S == 0) result = "0B0S";
-        else {
-            if (S != 0 && B!=0) result = B+ "B" + S+ "S";
-            else {
-                if (S == 0) result = B + "B";
-                else result = S+"S";
-            }
+    public static String scoreBuilder(Map<Integer, String> givenResult){
+        int B = 0;
+        int S = 0;
+        for (String value : givenResult.values()) {
+            if (value.equals("B")) B++;
+            if (value.equals("S")) S++;
         }
-        return result;
+        if (B == 0 & S == 0) return "0B0S";
+
+        else {
+            if (B != 0 & S != 0) return B+"B"+S+"S";
+            else if (B == 0) return S+"S";
+            else return B+"B";
+        }
     }
 
     public static boolean scoreCounts(String given, int tries, ArrayList<Integer> answer) {
         int S = 0;
         int B = 0;
+        String score = "";
+        // HashMap One (int) index: (int) value
+        Map<Integer, Integer> givenMap = new HashMap<>();
+        // HashMap Two (int) value: (String) (S or B)
+        Map<Integer, String> givenResult = new HashMap<>();
+
         for (int i = 0; i < given.length(); i++) {
-//            int numGiven = Integer.parseInt(String.valueOf(given.charAt(i)));
-            int numGiven = given.charAt(i) - '0';
-            if (answer.get(i).equals(numGiven)) {
-                S++;
-            } else if (Collections.frequency(answer, numGiven) == 1) {
-                B++;
-            }
+            givenMap.put(i, given.charAt(i) - '0');
+            givenResult.put(given.charAt(i) - '0', "");
         }
+
+        // Ball Check
+        for (Integer key : givenResult.keySet()) {
+            if (Collections.frequency(answer, key) == 1) givenResult.put(key, "B");
+        }
+        // Strike Check
+        for (int i = 0; i < answer.size(); i++) {
+            if (answer.get(i).equals(givenMap.get(i))) givenResult.put(givenMap.get(i), "S");
+        }
+
         System.out.println(tries + "번째 시도 :" + given);
-        System.out.println(scoreBuilder(B,S));
-        if (S==3) return true;
-        return false;
+        score = scoreBuilder(givenResult);
+        System.out.println(score);
+        if (score.equals("3S")) return true;
+        else return false;
     }
 
     public static void main(String[] args) {
